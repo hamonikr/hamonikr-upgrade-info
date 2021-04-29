@@ -1,3 +1,10 @@
+hamonikr-upgrade-info (1.0.1) hanla; urgency=low
+
+  * Change cinnamon.png image
+    -- It's too Big
+
+ -- HamoniKR <pkg@hamonikr.org>  Thu, 29 Apr 2021 14:49:24 +0900
+
 hamonikr-upgrade-info (1.0.0) hanla; urgency=low
 
   * hamonikr-upgrade-info release
