@@ -1,0 +1,4 @@
+[general]
+target_name = "HamoniKR 5.0 Hanla"
+target_codename = hanla
+editions = cinnamon

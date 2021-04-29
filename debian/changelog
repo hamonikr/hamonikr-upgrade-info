@@ -1,0 +1,10 @@
+hamonikr-upgrade-info (1.0.0) hanla; urgency=low
+
+  * hamonikr-upgrade-info release
+    - change info file
+    - change official-package-repositories.list > mirror server korea
+    - add hamonikr.list, hamonikr-pkg.list repo (you must change mintupdate package)
+    - change cinnamon view image
+    - delete mate, xface view image
+
+ -- HamoniKR <pkg@hamonikr.org>  Thu, 29 Apr 2021 14:49:24 +0900

@@ -1,0 +1,2 @@
+deb [arch=amd64] https://pkg.hamonikr.org focal main
+#deb-src [arch=amd64] https://pkg.hamonikr.org focal main

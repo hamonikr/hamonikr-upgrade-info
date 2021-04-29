@@ -1,0 +1,2 @@
+deb [arch=amd64] https://pkg.hamonikr.org hanla main upstream extra
+#deb-src [arch=amd64] https://pkg.hamonikr.org hanla main upstream extra
