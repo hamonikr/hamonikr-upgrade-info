@@ -2,6 +2,7 @@ hamonikr-artwork
 hamonikr-backgrounds-jin
 hamonikr-meta-cinnamon
 hamonikr-desktop-environment
+hamonikr-nemo-actions
 hamonikr-themes
 hamonikr-system-settings
 bamfdaemon
@@ -10,3 +11,4 @@ libgnome-menu-3-0
 libplank-common
 libplank1
 plank
+plymouth-theme-hamonikr
