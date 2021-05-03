@@ -1,3 +1,9 @@
+hamonikr-upgrade-info (1.0.3) hanla; urgency=low
+
+  * Add install packages & Add delete packages
+
+ -- HamoniKR <pkg@hamonikr.org>  Mon, 03 May 2021 11:33:42 +0900
+
 hamonikr-upgrade-info (1.0.2) hanla; urgency=low
 
   * Add preremoval file
