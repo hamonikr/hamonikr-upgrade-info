@@ -1,1 +1,8 @@
 ippusbxd
+clamav
+clamav-base
+clamav-daemon
+clamav-freshclam
+clamdscan
+clamtk
+libclamav9
