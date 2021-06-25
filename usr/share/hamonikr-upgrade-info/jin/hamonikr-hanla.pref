@@ -1,0 +1,7 @@
+Package: *
+Pin: origin pkg.hamonikr.org
+Pin-Priority: 900
+
+Package: *
+Pin: origin apt.hamonikr.org
+Pin-Priority: 800
