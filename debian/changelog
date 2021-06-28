@@ -1,3 +1,9 @@
+hamonikr-upgrade-info (1.0.7) hanla; urgency=low
+
+  * change cinnamon.png image > hanla
+
+ -- HamoniKR <pkg@hamonikr.org>  Fri, 25 Jun 2021 14:52:19 +0900
+
 hamonikr-upgrade-info (1.0.6) hanla; urgency=low
 
   * delete package name hamonikr-themes-extra in addtions
