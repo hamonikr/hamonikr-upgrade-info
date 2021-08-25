@@ -1,4 +1,4 @@
-deb http://ftp.kaist.ac.kr/linuxmint ulyssa main upstream import backport
+deb http://ftp.kaist.ac.kr/linuxmint uma main upstream import backport
 
 deb http://mirror.kakao.com/ubuntu focal main restricted universe multiverse
 deb http://mirror.kakao.com/ubuntu focal-updates main restricted universe multiverse

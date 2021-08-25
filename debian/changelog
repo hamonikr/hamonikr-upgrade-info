@@ -1,3 +1,10 @@
+hamonikr-upgrade-info (1.0.8) hanla; urgency=low
+
+  * Update additons package
+  * Update ulyssa to uma repository in official-package-repositories
+
+ -- HamoniKR <pkg@hamonikr.org>  Wed, 25 Aug 2021 18:44:04 +0900
+
 hamonikr-upgrade-info (1.0.7) hanla; urgency=low
 
   * change cinnamon.png image > hanla
