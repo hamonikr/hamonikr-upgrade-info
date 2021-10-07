@@ -1,8 +1,9 @@
-deb http://ftp.kaist.ac.kr/linuxmint uma main upstream import backport
+deb https://ftp.harukasan.org/linuxmint uma main upstream import backport 
 
-deb http://mirror.kakao.com/ubuntu focal main restricted universe multiverse
-deb http://mirror.kakao.com/ubuntu focal-updates main restricted universe multiverse
-deb http://mirror.kakao.com/ubuntu focal-backports main restricted universe multiverse
+deb https://ftp.harukasan.org/ubuntu focal main restricted universe multiverse
+deb https://ftp.harukasan.org/ubuntu focal-updates main restricted universe multiverse
+deb https://ftp.harukasan.org/ubuntu focal-backports main restricted universe multiverse
 
 deb http://security.ubuntu.com/ubuntu/ focal-security main restricted universe multiverse
 deb http://archive.canonical.com/ubuntu/ focal partner
+

@@ -1,2 +1,2 @@
-deb [arch=amd64] https://pkg.hamonikr.org hanla main
-#deb-src [arch=amd64] https://pkg.hamonikr.org hanla main
+deb [arch=amd64] https://pkg.hamonikr.org hanla main extra
+#deb-src [arch=amd64] https://pkg.hamonikr.org hanla main extra
