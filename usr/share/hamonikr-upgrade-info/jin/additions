@@ -4,6 +4,7 @@ command-not-found
 xplayer-thumbnailer
 bulky
 youtube-dl
+hamonikr-info
 hamonikr-core
 hamonikr-environment
 base-files
@@ -13,7 +14,11 @@ rtl8821ce-dkms
 hamonikr-conky
 lollypop
 ventoy
+motrix
 xpad
 microsoft-online-apps
 hamonikr-drive
+hamonikr-backup
 hamonikr-help
+hamonikr-games
+zoom

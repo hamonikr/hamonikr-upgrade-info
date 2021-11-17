@@ -1,3 +1,22 @@
+hamonikr-upgrade-info (1.1.4) hanla; urgency=low
+
+  * Update additions package
+
+ -- HamoniKR <pkg@hamonikr.org>  Wed, 17 Nov 2021 16:14:31 +0900
+
+hamonikr-upgrade-info (1.1.3) hanla; urgency=low
+
+  * Change repository server
+   - harukasan repository server down.
+
+ -- HamoniKR <pkg@hamonikr.org>  Wed, 13 Oct 2021 15:49:32 +0900
+
+hamonikr-upgrade-info (1.1.2) hanla; urgency=low
+
+  * Fix install zoom
+
+ -- HamoniKR <pkg@hamonikr.org>  Thu, 07 Oct 2021 19:53:18 +0900
+
 hamonikr-upgrade-info (1.1.1) hanla; urgency=low
 
   * Update additons package
