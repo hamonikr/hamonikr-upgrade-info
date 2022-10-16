@@ -2,3 +2,4 @@
 target_name = "HamoniKR 6.0 LTS"
 target_codename = taebaek
 editions = cinnamon
+release = 6.0
