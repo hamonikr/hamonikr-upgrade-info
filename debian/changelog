@@ -1,3 +1,10 @@
+hamonikr-upgrade-info (2.0.1) taebaek; urgency=low
+
+  * Add release number in info
+   - Cause use hamonikrreport
+
+ -- HamoniKR <pkg@hamonikr.org>  Mon, 17 Oct 2022 09:23:36 +0900
+
 hamonikr-upgrade-info (2.0.0) taebaek; urgency=low
 
   * Release for HamoniKR 6.0
