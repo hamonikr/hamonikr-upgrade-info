@@ -1,3 +1,10 @@
+hamonikr-upgrade-info (2.0.2) taebaek; urgency=low
+
+  * Add url link in info
+   - Cause use hamonikrreport
+
+ -- HamoniKR <pkg@hamonikr.org>  Mon, 17 Oct 2022 09:33:27 +0900
+
 hamonikr-upgrade-info (2.0.1) taebaek; urgency=low
 
   * Add release number in info
