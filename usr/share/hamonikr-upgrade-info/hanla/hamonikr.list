@@ -1,0 +1,2 @@
+deb [arch=amd64] https://update.hamonikr.org taebaek main extra
+deb-src [arch=amd64] https://update.hamonikr.org taebaek main extra

@@ -1,3 +1,12 @@
+hamonikr-upgrade-info (2.0.3) taebaek; urgency=low
+
+  * Update additions package
+  * Add preremovals package
+  * Add hamonikr.list file
+
+ -- HamoniKR <pkg@hamonikr.org>  Thu, 03 Nov 2022 16:07:22 +0900
+
+
 hamonikr-upgrade-info (2.0.2) taebaek; urgency=low
 
   * Add url link in info
