@@ -1,3 +1,9 @@
+hamonikr-upgrade-info (2.0.4) taebaek; urgency=low
+
+  * Update cinnamon.png file 
+
+ -- HamoniKR <pkg@hamonikr.org>  Tue, 08 Nov 2022 16:38:53 +0900
+
 hamonikr-upgrade-info (2.0.3) taebaek; urgency=low
 
   * Update additions package
