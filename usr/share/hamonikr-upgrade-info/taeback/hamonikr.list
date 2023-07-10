@@ -1,0 +1,3 @@
+### THIS FILE IS AUTOMATICALLY CONFIGURED ###
+deb [arch=amd64] https://repo.hamonikr.org kumkang main extra
+# deb-src [arch=amd64] https://repo.hamonikr.org kumkang main extra
