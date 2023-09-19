@@ -1,0 +1,6 @@
+[general]
+target_name = "HamoniKR 7.0 LTS"
+target_codename = kumkang
+editions = cinnamon
+release = 7.0
+link = https://hamonikr.org
