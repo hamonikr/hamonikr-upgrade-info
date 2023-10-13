@@ -1,9 +1,7 @@
-# mint upstream
-deb https://ftp.kaist.ac.kr/linuxmint vera main upstream import backport
+deb http://ftp.kaist.ac.kr/linuxmint victoria main upstream import backport 
 
-# ubuntu upstream
-deb https://ftp.kaist.ac.kr/ubuntu jammy main restricted universe multiverse
-deb https://ftp.kaist.ac.kr/ubuntu jammy-updates main restricted universe multiverse
-deb https://ftp.kaist.ac.kr/ubuntu jammy-backports main restricted universe multiverse
+deb http://ftp.kaist.ac.kr/ubuntu jammy main restricted universe multiverse
+deb http://ftp.kaist.ac.kr/ubuntu jammy-updates main restricted universe multiverse
+deb http://ftp.kaist.ac.kr/ubuntu jammy-backports main restricted universe multiverse
 
 deb http://security.ubuntu.com/ubuntu/ jammy-security main restricted universe multiverse

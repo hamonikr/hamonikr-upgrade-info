@@ -1,3 +1,7 @@
 ### THIS FILE IS AUTOMATICALLY CONFIGURED ###
+deb [arch=amd64] https://repo.hamonikr.org jammy main extra
+#deb-src [arch=amd64] https://repo.hamonikr.org jammy main extra
+
+### HAMONIKR KUMKANG APT ###
 deb [arch=amd64] https://repo.hamonikr.org kumkang main extra
-# deb-src [arch=amd64] https://repo.hamonikr.org kumkang main extra
+#deb-src [arch=amd64] https://repo.hamonikr.org kumkang main extra
