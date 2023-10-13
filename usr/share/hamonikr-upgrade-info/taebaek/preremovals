@@ -2,9 +2,15 @@ hamonikr-environment
 hamonikr-core
 hamonikr-themes
 hamonikr-backgrounds
+hamonikr-backgrounds-taebaek
 hamonikr-welcome
+hamonikrwelcome
 hamonikr-grub-theme
 hamonikr-info
 hamonikr-wheelspeed
+hamonikr-nemo-rabbitvcs
+rabbitvcs-core
 imwheel
 plank
+libplank-common
+libplank1
