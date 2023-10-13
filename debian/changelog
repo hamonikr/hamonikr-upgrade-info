@@ -1,3 +1,10 @@
+hamonikr-upgrade-info (3.0.1) kumkang; urgency=low
+
+  * Release for HamoniKR 7.0
+   - update package dependency
+
+ -- HamoniKR <pkg@hamonikr.org>  Fri, 13 Oct 2023 12:52:10 +0900
+
 hamonikr-upgrade-info (3.0.0) kumkang; urgency=low
 
   * Release for HamoniKR 7.0

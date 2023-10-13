@@ -7,5 +7,13 @@ Standards-Version: 3.9.5
 
 Package: hamonikr-upgrade-info
 Architecture: all
+Conflicts: mintupdate-gnome, 
+           mintupdate-kde, 
+           mintupdate-xfce
+Replaces: mintupdate-gnome, 
+          mintupdate-kde, 
+          mintupdate-xfce, 
+          mintupdate,
+          hamonikr-update
 Description: Information about upgrade paths
  Provides information to the Update Manager on how to perform distribution upgrades.
