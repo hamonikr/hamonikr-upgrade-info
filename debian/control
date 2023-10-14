@@ -14,6 +14,7 @@ Replaces: mintupdate-gnome,
           mintupdate-kde, 
           mintupdate-xfce, 
           mintupdate,
-          hamonikr-update
+          hamonikr-update,
+          synaptic
 Description: Information about upgrade paths
  Provides information to the Update Manager on how to perform distribution upgrades.

@@ -3,8 +3,9 @@ hamonikr-upgrade-info (3.0.4) kumkang; urgency=low
   * Release for HamoniKR 7.0
    - Add logging to file
    - ~/.hamonikr/rel_upgrade_root.log
+   - Update synaptic po
 
- -- HamoniKR <pkg@hamonikr.org>  Sat, 14 Oct 2023 22:11:14 +0900
+ -- HamoniKR <pkg@hamonikr.org>  Sat, 14 Oct 2023 23:11:42 +0900
 
 hamonikr-upgrade-info (3.0.3) kumkang; urgency=low
 

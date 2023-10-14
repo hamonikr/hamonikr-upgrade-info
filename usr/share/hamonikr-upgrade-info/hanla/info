@@ -1,6 +1,6 @@
 [general]
-target_name = "HamoniKR 7.0 LTS"
-target_codename = kumkang
+target_name = "HamoniKR 6.0 LTS"
+target_codename = taebaek
 editions = cinnamon
-release = 7.0
+release = 6.0
 link = https://hamonikr.org

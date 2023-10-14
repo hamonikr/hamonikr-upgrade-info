@@ -2,12 +2,13 @@ all: buildmo
 
 buildmo:
 	@echo "Building the mo files"
-	# WARNING: the second sed below will only works correctly with the languages that don't contain "-"
-	for file in `ls po/*.po`; do \
-		lang=`echo $$file | sed 's@po/@@' | sed 's/.po//' | sed 's/mintupdate-//'`; \
-		install -d usr/share/locale/$$lang/LC_MESSAGES/; \
-		msgfmt -o usr/share/locale/$$lang/LC_MESSAGES/mintupdate.mo $$file; \
-	done \
+	mkdir -p usr/share/locale/ko/LC_MESSAGES
+	if [ -f po/mintupdate-ko.po ]; then \
+		msgfmt -o usr/share/locale/ko/LC_MESSAGES/mintupdate.mo po/mintupdate-ko.po; \
+	fi
+	if [ -f po/synaptic-ko.po ]; then \
+		msgfmt -o usr/share/locale/ko/LC_MESSAGES/synaptic.mo po/synaptic-ko.po; \
+	fi
 
 clean:
 	rm -rf usr/share/locale
