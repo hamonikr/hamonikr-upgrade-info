@@ -12,6 +12,15 @@ from gi.repository import Gtk
 
 import apt
 
+import logging, syslog
+
+# ~/.hamonikr/log/FILENAME.log 형식으로 로그파일 동적 생성
+user_home = os.path.expanduser("~")
+log_dir = os.path.join(user_home, ".hamonikr/log")
+os.makedirs(log_dir, exist_ok=True)
+log_file = os.path.join(log_dir, os.path.basename(__file__) + ".log")
+logging.basicConfig(filename=log_file, level=logging.DEBUG)
+
 gettext.install("mintupdate", "/usr/share/locale")
 
 class Assistant:
@@ -56,6 +65,7 @@ class Assistant:
                 self.rel_target_name = config['general']['target_name']
                 self.rel_target_codename = config['general']['target_codename']
                 self.rel_editions = config['general']['editions']
+                self.rel_release = config['general']['release']
                 if self.current_edition.lower() in self.rel_editions:
                     label = Gtk.Label()
                     label.set_markup(_("A new version of Linux Mint is available!"))
@@ -73,6 +83,17 @@ class Assistant:
         self.assistant.show_all()
 
     def build_assistant(self):
+        rel_path = "/usr/share/hamonikr-upgrade-info/%s" % self.current_codename
+        if not os.path.exists(rel_path):
+            self.show_message('/usr/lib/linuxmint/mintUpdate/rel_upgrades/info.png', _("No upgrades were found."))
+        else:
+            config = configparser.ConfigParser()
+            config.read(os.path.join(rel_path, "info"))
+            self.rel_target_name = config['general']['target_name']
+            self.rel_target_codename = config['general']['target_codename']
+            self.rel_editions = config['general']['editions']
+            self.rel_release = config['general']['release']
+        
         # Known issues
         self.vbox_rel_notes = Gtk.VBox()
         self.vbox_rel_notes.set_border_width(60)
@@ -88,7 +109,11 @@ class Assistant:
         vbox_content.pack_start(label, False, False, 6)
         self.vbox_rel_notes.pack_start(vbox_content, False, False, 6)
         link = Gtk.Label()
-        link.set_markup("<a href='https://hamonikr.org'><b>%s</b></a>" % (_("Release notes for %s") % self.rel_target_name))
+        # 7.0 release note
+        if self.rel_target_codename.lower() == "kumkang":
+            link.set_markup("<a href='https://docs.hamonikr.org/hamonikr-%s/'><b>%s</b></a>" % (self.rel_release, _("Release notes for %s") % self.rel_target_name))
+        else:
+            link.set_markup("<a href='https://hamonikr.org'><b>%s</b></a>" % (_("Release notes for %s") % self.rel_target_name))
         self.vbox_rel_notes.pack_start(link, False, False, 6)
         label = Gtk.Label()
         label.set_markup("<i><b>%s</b></i>" % _("Click on the link to open the release notes."))
@@ -110,7 +135,11 @@ class Assistant:
         vbox_content.pack_start(label, False, False, 6)
         self.vbox_new_features.pack_start(vbox_content, False, False, 6)
         link = Gtk.Label()
-        link.set_markup("<a href='https://hamonikr.org'><b>%s</b></a>" % (_("New features in %s") % self.rel_target_name))
+        # 7.0 new features
+        if self.rel_target_codename.lower() == "kumkang":
+            link.set_markup("<a href='https://docs.hamonikr.org/hamonikr-%s/#new_feature'><b>%s</b></a>" % (self.rel_release, _("New features in %s") % self.rel_target_name))
+        else:
+            link.set_markup("<a href='https://hamonikr.org'><b>%s</b></a>" % (_("New features in %s") % self.rel_target_name))
         self.vbox_new_features.pack_start(link, False, False, 6)
         label = Gtk.Label()
         label.set_markup("<i><b>%s</b></i>" % _("Click on the link to browse the new features."))
@@ -239,6 +268,7 @@ class Assistant:
                 os.system("gsettings set %s false" % screensaver_setting)
 
         cmd = ["pkexec", "/usr/bin/mint-release-upgrade-root", "%s" % self.current_codename, "%s" % self.assistant.get_window().get_xid()]
+        logging.info("cmd : %s", cmd)
         comnd = Popen(' '.join(cmd), shell=True)
         returnCode = comnd.wait()
 

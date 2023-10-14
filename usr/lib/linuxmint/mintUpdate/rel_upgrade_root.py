@@ -2,14 +2,24 @@
 
 import os, sys, apt, tempfile, gettext
 import subprocess
+import logging, syslog
+
+# ~/.hamonikr/log/FILENAME.log 형식으로 로그파일 동적 생성
+user_home = os.path.expanduser("~")
+log_dir = os.path.join(user_home, ".hamonikr/log")
+os.makedirs(log_dir, exist_ok=True)
+log_file = os.path.join(log_dir, os.path.basename(__file__) + ".log")
+logging.basicConfig(filename=log_file, level=logging.DEBUG)
 
 gettext.install("mintupdate", "/usr/share/locale")
 
 if os.getuid() != 0:
+    logging.error("Run this code as root!")  # 로깅 추가
     print("Run this code as root!")
     sys.exit(1)
 
 if len(sys.argv) != 3:
+    logging.error("Missing arguments!")  # 로깅 추가
     print("Missing arguments!")
     sys.exit(1)
 
@@ -38,7 +48,10 @@ def install_packages(packages):
         cmd.append("--set-selections-file")
         cmd.append("%s" % f.name)
         f.flush()
-        subprocess.run(cmd)
+        try:
+            subprocess.run(cmd)
+        except Exception as e:
+            logging.exception("Exception occurred: {}".format(e))
 
 def remove_packages(packages):
     if len(packages) > 0:
@@ -50,8 +63,11 @@ def remove_packages(packages):
         cmd.append("--set-selections-file")
         cmd.append("%s" % f.name)
         f.flush()
-        subprocess.run(cmd)
-
+        try:
+            subprocess.run(cmd)
+        except Exception as e:
+            logging.exception("Exception occurred: {}".format(e))
+        
 def purge_packages(packages):
     if len(packages) > 0:
         cmd = ["sudo", "/usr/sbin/synaptic", "--hide-main-window", "--non-interactive", "--parent-window-id", "%s" % window_id, "-o", "Synaptic::closeZvt=true"]
@@ -62,8 +78,11 @@ def purge_packages(packages):
         cmd.append("--set-selections-file")
         cmd.append("%s" % f.name)
         f.flush()
-        subprocess.run(cmd)
-
+        try:
+            subprocess.run(cmd)
+        except Exception as e:
+            logging.exception("Exception occurred: {}".format(e))
+        
 def file_to_list(filename):
     returned_list = []
     if os.path.exists(filename):
@@ -97,12 +116,20 @@ subprocess.run(["cp", sources_list2, "/etc/apt/sources.list.d/hamonikr.list"])
 #-------------------------
 
 cache = apt.Cache()
-subprocess.run(["sudo", "/usr/sbin/synaptic", "--hide-main-window", "--update-at-startup", "--non-interactive", "--parent-window-id", "%d" % window_id])
+# subprocess.run(["sudo", "/usr/sbin/synaptic", "--hide-main-window", "--update-at-startup", "--non-interactive", "--parent-window-id", "%d" % window_id])
+try:
+    subprocess.run(["sudo", "/usr/sbin/synaptic", "--hide-main-window", "--update-at-startup", "--non-interactive", "--parent-window-id", "%d" % window_id])
+except Exception as e:
+    logging.exception("Exception occurred: {}".format(e))
 
 # STEP 2.5 : PRE REMOVE PACKAGE (depends probrem)
 
 removals = file_to_list(preremovals_filename)
-purge_packages(removals)
+# purge_packages(removals)
+try:
+    purge_packages(removals)
+except Exception as e:
+    logging.exception("Exception occurred: {}".format(e))
 
 # STEP 3: INSTALL MINT UPDATES
 #--------------------------------
@@ -134,19 +161,35 @@ for pkg in changes:
                         if origin.component != "romeo" and package != "linux-kernel-generic":
                             packages.append(package)
 
-install_packages(packages)
+# install_packages(packages)
+
+try:
+    install_packages(packages)
+except Exception as e:
+    logging.exception("Exception occurred: {}".format(e))
 
 # STEP 4: ADD PACKAGES
 #---------------------
 
 additions = file_to_list(additions_filename)
-install_packages(additions)
+# install_packages(additions)
+
+try:
+    install_packages(packages)
+except Exception as e:
+    logging.exception("Exception occurred: {}".format(e))
+
 
 # STEP 5: REMOVE PACKAGES
 #------------------------
 
 removals = file_to_list(removals_filename)
-remove_packages(removals)
+# remove_packages(removals)
+
+try:
+    remove_packages(removals)
+except Exception as e:
+    logging.exception("Exception occurred: {}".format(e))
 
 # STEP 6: MAKE kumkangupdate.dummy FILE
 # 7.0 업그레이드 시 해야하는 일이 있으면 이 파일로 체크해서 hamonikr-system 의 set-user-env 에서 수행
