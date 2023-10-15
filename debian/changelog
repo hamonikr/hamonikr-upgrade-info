@@ -1,3 +1,24 @@
+hamonikr-upgrade-info (3.0.8) kumkang; urgency=low
+
+  * Add testing code
+   - Test for Major upgrade
+
+ -- HamoniKR <pkg@hamonikr.org>  Sun, 15 Oct 2023 16:55:33 +0900
+
+hamonikr-upgrade-info (3.0.7) kumkang; urgency=low
+
+  * Release for HamoniKR 7.0
+   - Changed pre remove process
+
+ -- HamoniKR <pkg@hamonikr.org>  Sun, 15 Oct 2023 16:15:22 +0900
+
+hamonikr-upgrade-info (3.0.6) kumkang; urgency=low
+
+  * Release for HamoniKR 7.0
+   - Add logging
+
+ -- HamoniKR <pkg@hamonikr.org>  Sun, 15 Oct 2023 16:05:34 +0900
+
 hamonikr-upgrade-info (3.0.5) kumkang; urgency=low
 
   * Release for HamoniKR 7.0

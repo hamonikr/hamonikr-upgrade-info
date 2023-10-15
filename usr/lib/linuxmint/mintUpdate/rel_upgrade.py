@@ -268,7 +268,8 @@ class Assistant:
                 os.system("gsettings set %s false" % screensaver_setting)
 
         cmd = ["pkexec", "/usr/bin/mint-release-upgrade-root", "%s" % self.current_codename, "%s" % self.assistant.get_window().get_xid()]
-        logging.info("cmd : %s", cmd)
+        # logging.info("cmd : %s", cmd)
+        logging.info("apply_button_pressed cmd string : %s" % ' '.join(cmd))
         comnd = Popen(' '.join(cmd), shell=True)
         returnCode = comnd.wait()
 

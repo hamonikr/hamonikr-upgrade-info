@@ -50,6 +50,7 @@ def install_packages(packages):
         f.flush()
         try:
             subprocess.run(cmd)
+            logging.info("install cmd string : %s" % ' '.join(cmd))
         except Exception as e:
             logging.exception("Exception occurred: {}".format(e))
 
@@ -65,6 +66,7 @@ def remove_packages(packages):
         f.flush()
         try:
             subprocess.run(cmd)
+            logging.info("remove cmd string : %s" % ' '.join(cmd))
         except Exception as e:
             logging.exception("Exception occurred: {}".format(e))
         
@@ -80,6 +82,7 @@ def purge_packages(packages):
         f.flush()
         try:
             subprocess.run(cmd)
+            logging.info("purge cmd string : %s" % ' '.join(cmd))
         except Exception as e:
             logging.exception("Exception occurred: {}".format(e))
         
@@ -93,6 +96,16 @@ def file_to_list(filename):
                     continue
                 returned_list.append(line)
     return returned_list
+
+# STEP 0.5 : PRE REMOVE PACKAGE (depends probrem)
+# 저장소를 바꾸기 전에 이 과정을 해야 함
+
+removals = file_to_list(preremovals_filename)
+# purge_packages(removals)
+try:
+    purge_packages(removals)
+except Exception as e:
+    logging.exception("Exception occurred: {}".format(e))
 
 # STEP 1: UPDATE APT SOURCES
 #---------------------------
@@ -118,18 +131,13 @@ subprocess.run(["cp", sources_list2, "/etc/apt/sources.list.d/hamonikr.list"])
 cache = apt.Cache()
 # subprocess.run(["sudo", "/usr/sbin/synaptic", "--hide-main-window", "--update-at-startup", "--non-interactive", "--parent-window-id", "%d" % window_id])
 try:
-    subprocess.run(["sudo", "/usr/sbin/synaptic", "--hide-main-window", "--update-at-startup", "--non-interactive", "--parent-window-id", "%d" % window_id])
+    cmd = ["sudo", "/usr/sbin/synaptic", "--hide-main-window", "--update-at-startup", "--non-interactive", "--parent-window-id", "%d" % window_id]
+    subprocess.run(' '.join(cmd))
+    logging.info("install cmd string : %s" % ' '.join(cmd))
 except Exception as e:
     logging.exception("Exception occurred: {}".format(e))
 
-# STEP 2.5 : PRE REMOVE PACKAGE (depends probrem)
 
-removals = file_to_list(preremovals_filename)
-# purge_packages(removals)
-try:
-    purge_packages(removals)
-except Exception as e:
-    logging.exception("Exception occurred: {}".format(e))
 
 # STEP 3: INSTALL MINT UPDATES
 #--------------------------------
