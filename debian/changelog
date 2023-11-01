@@ -1,3 +1,9 @@
+hamonikr-upgrade-info (3.1.0) kumkang; urgency=low
+
+  * Fix package list
+
+ -- HamoniKR <pkg@hamonikr.org>  Wed, 01 Nov 2023 17:14:36 +0900
+
 hamonikr-upgrade-info (3.0.9) kumkang; urgency=low
 
   * Update kumkang screenshot
