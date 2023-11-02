@@ -170,6 +170,19 @@ apt_get_operation autoremove
 # APT 환경 초기화
 apt_get_operation install -f
 
+# APT 파일에 taebaek 체크로 정상적인 업그레이드 유무 확인
+if grep -q "taebaek" /etc/apt/sources.list.d/hamonikr.list; then
+    if [ "$locale" = "ko" ]; then
+        error_message "업그레이드가 정상적이지 않습니다. 다시 업그레이드를 실행하거나 ISO 설치를 시도하세요."
+    else
+        error_message "The upgrade is not successful. Please try again or consider installing via an ISO file."
+    fi
+    exit 1
+fi
+
+# trap 해제
+trap - SIGINT SIGTERM EXIT INT TERM
+
 # 종료 시간 기록 및 실행 시간 계산
 end_time=$(date +%s)
 elapsed_time=$((end_time - start_time))
@@ -197,9 +210,6 @@ fi
 
 # 사용자 입력 대기
 read -p ""
-
-# trap 해제
-trap - SIGINT SIGTERM EXIT INT TERM
 
 # 시스템 재시작
 sudo reboot

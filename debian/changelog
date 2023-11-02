@@ -1,3 +1,9 @@
+hamonikr-upgrade-info (3.2.0) kumkang; urgency=low
+
+  * Check successful upgrade status
+
+ -- HamoniKR <pkg@hamonikr.org>  Thu, 02 Nov 2023 15:47:57 +0900
+
 hamonikr-upgrade-info (3.1.9) kumkang; urgency=low
 
   * Update screensaver disable
