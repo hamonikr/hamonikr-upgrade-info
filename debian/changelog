@@ -1,5 +1,11 @@
 hamonikr-upgrade-info (3.1.1) kumkang; urgency=low
 
+  * Fixed permission error in do-upgrade
+
+ -- HamoniKR <pkg@hamonikr.org>  Thu, 02 Nov 2023 11:26:43 +0900
+
+hamonikr-upgrade-info (3.1.1) kumkang; urgency=low
+
   * refactoring for do-upgrade
    - show script execute time
 

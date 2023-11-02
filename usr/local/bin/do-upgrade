@@ -53,8 +53,8 @@ do_backup() {
     echo 'Prepare backup file for rollback...'
     for file in /etc/apt/sources.list.d/*.list; do
         if [ -f "$file" ]; then
-            cp -v "$file" "${file}.bak"
-            rm "$file"
+            sudo cp -fv "$file" "${file}.bak"
+            sudo rm -f "$file"
         fi
     done
 }
@@ -65,8 +65,8 @@ do_rollback() {
     for file in /etc/apt/sources.list.d/*.bak; do
         if [ -f "$file" ]; then
             original_file="${file%.bak}"
-            cp -v "$file" "$original_file"
-            rm "$file"
+            sudo cp -fv "$file" "$original_file"
+            sudo rm -f "$file"
         fi
     done
     apt-get update
