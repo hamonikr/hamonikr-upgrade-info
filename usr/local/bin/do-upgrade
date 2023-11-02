@@ -131,8 +131,14 @@ esac
 # 현재 APT 환경 백업
 do_backup
 
+# 업그레이드 전 화면보호기 중지
+RUID=$(who | awk 'FNR == 1 {print $1}')
+RUSER_UID=$(id -u ${RUID})
+if [ ! -z "$RUID" ] ; then
+    sudo -u ${RUID} DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${RUSER_UID}/bus" gsettings set org.cinnamon.desktop.session idle-delay 0 || error_message "Chage gsettings"
+fi
+
 # 업그레이드 전 패키지 제거
-sudo xset s off || error_message "xset s off"
 sudo apt update || error_message "apt update"
 apt_get_operation upgrade
 

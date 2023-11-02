@@ -1,3 +1,9 @@
+hamonikr-upgrade-info (3.1.9) kumkang; urgency=low
+
+  * Update screensaver disable
+
+ -- HamoniKR <pkg@hamonikr.org>  Thu, 02 Nov 2023 15:24:00 +0900
+
 hamonikr-upgrade-info (3.1.8) kumkang; urgency=low
 
   * Disable trap before reboot cmd
