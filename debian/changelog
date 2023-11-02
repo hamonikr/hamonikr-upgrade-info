@@ -1,3 +1,11 @@
+hamonikr-upgrade-info (3.1.1) kumkang; urgency=low
+
+  * Add cmdline upgrade
+   - do-upgrade
+   - upgrade for kumkang from taebaek
+
+ -- HamoniKR <pkg@hamonikr.org>  Thu, 02 Nov 2023 10:46:30 +0900
+
 hamonikr-upgrade-info (3.1.0) kumkang; urgency=low
 
   * Fix package list

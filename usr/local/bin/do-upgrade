@@ -1,0 +1,77 @@
+#!/bin/bash
+
+# MIT License
+# 
+# Copyright (c) [year] [copyright holder]
+# 
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+# 
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+# Function to display error message
+error_message() {
+    if [ "$locale" = "ko" ]; then
+        echo -e "\e[31m오류: $1 작업이 실패했습니다.\e[0m"
+    else
+        echo -e "\e[31mERROR: Failed to execute $1.\e[0m"
+    fi
+}
+
+# Function to display info message
+info_message() {
+    if [ "$locale" = "ko" ]; then
+        echo -e "\e[92m정보: $1\e[0m"
+    else
+        echo -e "\e[92mINFO: $1\e[0m"
+    fi
+}
+
+# Function for apt-get operations
+apt_get_operation() {
+    DEBIAN_FRONTEND=noninteractive sudo apt-get -y --assume-yes --option Dpkg::Options::=--force-confnew --allow-remove-essential --allow-change-held-packages "$@" || error_message "$@ Execute"
+}
+
+# 업그레이드 전 패키지 제거
+sudo xset s off || error_message "xset s off"
+sudo apt update || error_message "apt update"
+apt_get_operation upgrade
+sudo apt purge -y hamonikrreport hamonikrwelcome warpinator rabbitvcs-core hamonikr-nemo-rabbitvcs lupin-casper || error_message "apt purge"
+
+# 새 버전 APT 저장소 추가
+wget -qO- https://repo.hamonikr.org/add-hamonikr-kumkang.apt | sudo -E bash - || error_message "ADD APT Repository"
+sudo apt update || error_message "apt update"
+apt_get_operation install -f
+
+# dist-upgrade
+apt_get_operation dist-upgrade
+
+# 새 버전 필수 패키지 설치
+apt_get_operation install hamonikr-desktop-environment
+apt_get_operation install hamonikr-system --reinstall
+
+# 불필요한 패키지 제거
+apt_get_operation autoremove
+
+# APT 환경 초기화
+apt_get_operation install -f
+
+# 재시작 안내
+if [ "$locale" = "ko" ]; then
+    info_message "새 버전 적용을 위해서 시스템 재시작이 필요합니다."
+else
+    info_message "System restart is required to apply the new version."
+fi
