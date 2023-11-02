@@ -165,7 +165,7 @@ minutes=$(( (elapsed_time % 3600) / 60 ))
 seconds=$((elapsed_time % 60))
 
 # 실행 시간 출력
-if [ "$system_locale" = "ko" ]; then
+if [ "$locale" = "ko" ]; then
     info_message "전체 과정의 실행 시간: ${hours}시간 ${minutes}분 ${seconds}초"
 else
     info_message "Total execution time: ${hours} hours ${minutes} minutes ${seconds} seconds"
