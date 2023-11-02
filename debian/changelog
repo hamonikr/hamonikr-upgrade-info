@@ -1,3 +1,9 @@
+hamonikr-upgrade-info (3.1.6) kumkang; urgency=low
+
+  * update star_time function
+
+ -- HamoniKR <pkg@hamonikr.org>  Thu, 02 Nov 2023 11:58:45 +0900
+
 hamonikr-upgrade-info (3.1.5) kumkang; urgency=low
 
   * Convert execution time
