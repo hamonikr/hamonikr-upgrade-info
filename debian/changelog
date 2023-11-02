@@ -1,3 +1,9 @@
+hamonikr-upgrade-info (3.1.5) kumkang; urgency=low
+
+  * Convert execution time
+
+ -- HamoniKR <pkg@hamonikr.org>  Thu, 02 Nov 2023 11:54:53 +0900
+
 hamonikr-upgrade-info (3.1.4) kumkang; urgency=low
 
   * Add feature : ask upgrade to user

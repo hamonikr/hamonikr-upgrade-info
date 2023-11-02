@@ -159,15 +159,16 @@ apt_get_operation install -f
 end_time=$(date +%s)
 elapsed_time=$((end_time - start_time))
 
+# 시, 분, 초로 변환
+hours=$((elapsed_time / 3600))
+minutes=$(( (elapsed_time % 3600) / 60 ))
+seconds=$((elapsed_time % 60))
+
 # 실행 시간 출력
-if [ "$locale" = "ko" ]; then
-    echo "---"
-    info_message "전체 과정의 실행 시간: $elapsed_time 초"
-    echo "---"    
+if [ "$system_locale" = "ko" ]; then
+    info_message "전체 과정의 실행 시간: ${hours}시간 ${minutes}분 ${seconds}초"
 else
-    echo "---"
-    info_message "Total execution time: $elapsed_time seconds"
-    echo "---"    
+    info_message "Total execution time: ${hours} hours ${minutes} minutes ${seconds} seconds"
 fi
 
 # 재시작 안내 및 사용자 입력 대기
@@ -184,3 +185,4 @@ read -p ""
 
 # 시스템 재시작
 sudo reboot
+
