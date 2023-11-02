@@ -53,7 +53,7 @@ apt_get_operation() {
 
 # 현재 APT 저장소 설정 백업
 do_backup() {
-    echo 'Prepare backup file for rollback...'
+    info_message 'Prepare backup file for rollback...'
     for file in /etc/apt/sources.list.d/*.list; do
         if [ -f "$file" ]; then
             sudo cp -fv "$file" "${file}.bak"
@@ -64,7 +64,7 @@ do_backup() {
 
 # 스크립트 중단 시 롤백
 do_rollback() {
-    echo 'The program has been interrupted. Roll back files...'
+    info_message 'The program has been interrupted. Roll back files...'
     for file in /etc/apt/sources.list.d/*.bak; do
         if [ -f "$file" ]; then
             original_file="${file%.bak}"
