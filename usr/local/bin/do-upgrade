@@ -192,6 +192,9 @@ fi
 # 사용자 입력 대기
 read -p ""
 
+# trap 해제
+trap - SIGINT SIGTERM EXIT INT TERM
+
 # 시스템 재시작
 sudo reboot
 

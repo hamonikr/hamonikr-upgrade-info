@@ -1,3 +1,9 @@
+hamonikr-upgrade-info (3.1.8) kumkang; urgency=low
+
+  * Disable trap before reboot cmd
+
+ -- HamoniKR <pkg@hamonikr.org>  Thu, 02 Nov 2023 14:51:02 +0900
+
 hamonikr-upgrade-info (3.1.7) kumkang; urgency=low
 
   * update purge logic
