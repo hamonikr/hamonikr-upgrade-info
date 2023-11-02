@@ -1,3 +1,9 @@
+hamonikr-upgrade-info (3.1.7) kumkang; urgency=low
+
+  * update purge logic
+
+ -- HamoniKR <pkg@hamonikr.org>  Thu, 02 Nov 2023 12:45:13 +0900
+
 hamonikr-upgrade-info (3.1.6) kumkang; urgency=low
 
   * update star_time function

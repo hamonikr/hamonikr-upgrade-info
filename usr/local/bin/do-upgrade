@@ -99,13 +99,13 @@ done &
 if [ "$locale" = "ko" ]; then
     info_message "업그레이드 과정은 네트워크 환경에 따라 오래 걸릴 수 있습니다."
     echo ""
-    info_message "진행 과정에서 YES/NO를 묻는 화면이 나오면 YES를 누르세요."
+    info_message "[주의] 진행 과정에서 YES/NO를 묻는 화면이 나오면 YES를 누르세요."
     echo ""
     info_message "업그레이드 실패 시 다시 실행하시거나, ISO 파일로 설치를 시도하세요."
 else
     info_message "The upgrade process may take a long time depending on your network environment."
     echo ""
-    info_message "Press YES when asked YES/NO during the upgrade process."
+    info_message "[INFO] Press YES when asked YES/NO during the upgrade process."
     echo ""
     info_message "If the upgrade fails, try running it again or consider installing via an ISO file."
 fi
@@ -135,7 +135,16 @@ do_backup
 sudo xset s off || error_message "xset s off"
 sudo apt update || error_message "apt update"
 apt_get_operation upgrade
-sudo apt purge -y hamonikrreport hamonikrwelcome warpinator rabbitvcs-core hamonikr-nemo-rabbitvcs lupin-casper || error_message "apt purge"
+
+# 삭제할 패키지 명을 배열로 저장
+packages=("hamonikrreport" "hamonikrwelcome" "warpinator" "rabbitvcs-core" "hamonikr-nemo-rabbitvcs" "lupin-casper")
+
+# 각 패키지에 대해 확인 후 purge 실행
+for pkg in "${packages[@]}"; do
+if dpkg -l | grep -q "$pkg"; then
+    sudo apt-get purge -y "$pkg" || error_message "apt purge $pkg"
+fi
+done
 
 # 새 버전 APT 저장소 추가
 wget -qO- https://repo.hamonikr.org/add-hamonikr-kumkang.apt | sudo -E bash - || error_message "ADD APT Repository"
