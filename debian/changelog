@@ -1,3 +1,9 @@
+hamonikr-upgrade-info (3.2.1) kumkang; urgency=low
+
+  * Update debian frontend setting for automatic
+
+ -- HamoniKR <pkg@hamonikr.org>  Thu, 02 Nov 2023 16:30:04 +0900
+
 hamonikr-upgrade-info (3.2.0) kumkang; urgency=low
 
   * Check successful upgrade status
