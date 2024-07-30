@@ -2,7 +2,7 @@
 
 # MIT License
 # 
-# Copyright (c) [year] [copyright holder]
+# Copyright (c) 2023 Kevin Kim (chaeya@gmail.com)
 # 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -156,7 +156,7 @@ fi
 done
 
 # 새 버전 APT 저장소 추가
-wget -qO- https://repo.hamonikr.org/add-hamonikr-kumkang.apt | sudo -E bash - || error_message "ADD APT Repository"
+wget -qO- https://repo.hamonikr.org/add-hamonikr-paektu.apt | sudo -E bash - || error_message "ADD APT Repository"
 sudo apt update || error_message "apt update"
 apt_get_operation install -f
 
