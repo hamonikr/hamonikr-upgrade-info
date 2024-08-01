@@ -1,0 +1,7 @@
+# Ubuntu 24.04 noble compatible applications
+deb [arch=amd64] https://repo.hamonikr.org noble main contrib updates backport extra non-free
+# deb-src [arch=amd64] https://repo.hamonikr.org noble main contrib updates backport extra non-free
+
+# HamoniKR OS specfic applications
+deb [arch=amd64] https://repo.hamonikr.org paektu main contrib updates backport extra non-free
+# deb-src [arch=amd64] https://repo.hamonikr.org paektu main contrib updates backport extra non-free

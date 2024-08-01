@@ -1,0 +1,6 @@
+[general]
+target_name = "HamoniKR 8 LTS"
+target_codename = paektu
+editions = cinnamon
+release = 8
+link = https://hamonikr.org

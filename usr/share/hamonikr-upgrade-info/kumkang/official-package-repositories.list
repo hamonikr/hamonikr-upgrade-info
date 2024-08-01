@@ -1,0 +1,8 @@
+# LinuxMint APT
+deb https://ftp.kaist.ac.kr/linuxmint wilma main upstream import backport
+
+# Ubuntu APT
+deb https://ftp.kaist.ac.kr/ubuntu noble main restricted universe multiverse
+deb https://ftp.kaist.ac.kr/ubuntu noble-updates main restricted universe multiverse
+deb https://ftp.kaist.ac.kr/ubuntu noble-backports main restricted universe multiverse
+deb http://security.ubuntu.com/ubuntu/ noble-security main restricted universe multiverse
