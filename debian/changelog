@@ -1,3 +1,9 @@
+hamonikr-upgrade-info (3.4.2) paektu; urgency=low
+
+  * Remove gconf2-common, gconf-service, gconf-service-backend
+
+ -- HamoniKR <pkg@hamonikr.org>  Thu, 22 Aug 2024 18:06:59 +0900
+
 hamonikr-upgrade-info (3.4.1) paektu; urgency=low
 
   * Remove gnome-clocks before upgrade 

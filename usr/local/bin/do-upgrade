@@ -146,7 +146,7 @@ sudo apt update || error_message "apt update"
 apt_get_operation upgrade
 
 # 삭제할 패키지 명을 배열로 저장
-packages=("hamonikrreport" "hamonikrwelcome" "warpinator" "rabbitvcs-core" "hamonikr-nemo-rabbitvcs" "lupin-casper" "gnome-clocks")
+packages=("hamonikrreport" "hamonikrwelcome" "warpinator" "rabbitvcs-core" "hamonikr-nemo-rabbitvcs" "lupin-casper" "gnome-clocks" "gconf2-common" "gconf-service" "gconf-service-backend")
 
 # 각 패키지에 대해 확인 후 purge 실행
 for pkg in "${packages[@]}"; do
