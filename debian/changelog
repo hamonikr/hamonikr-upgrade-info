@@ -1,3 +1,9 @@
+hamonikr-upgrade-info (3.4.1) paektu; urgency=low
+
+  * Remove gnome-clocks before upgrade 
+
+ -- HamoniKR <pkg@hamonikr.org>  Thu, 22 Aug 2024 10:11:56 +0900
+
 hamonikr-upgrade-info (3.4.0) paektu; urgency=low
 
   * Release for HamoniKR 8
