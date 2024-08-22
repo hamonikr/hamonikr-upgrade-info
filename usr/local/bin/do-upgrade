@@ -173,8 +173,9 @@ apt_get_operation autoremove
 # APT 환경 초기화
 apt_get_operation install -f
 
-# APT 파일에 taebaek 체크로 정상적인 업그레이드 유무 확인
-if grep -q "taebaek" /etc/apt/sources.list.d/hamonikr.list; then
+# APT 파일에서 업그레이드 이전 버전의 코드가 남아있는지 체크로 정상적인 업그레이드 유무 확인
+prev_oscode="kumkang"
+if grep -q "$prev_oscode" /etc/apt/sources.list.d/hamonikr.list; then
     if [ "$locale" = "ko" ]; then
         error_message "업그레이드가 정상적이지 않습니다. 다시 업그레이드를 실행하거나 ISO 설치를 시도하세요."
     else

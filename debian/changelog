@@ -3,7 +3,7 @@ hamonikr-upgrade-info (3.4.0) paektu; urgency=low
   * Release for HamoniKR 8
    - Added meta data for upgrade from kumkang
 
- -- HamoniKR <pkg@hamonikr.org>  Thu, 01 Aug 2024 13:25:18 +0900
+ -- HamoniKR <pkg@hamonikr.org>  Thu, 22 Aug 2024 09:37:26 +0900
 
 hamonikr-upgrade-info (3.3.0) paektu; urgency=low
 
