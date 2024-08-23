@@ -1,3 +1,9 @@
+hamonikr-upgrade-info (3.4.3) kumkang; urgency=low
+
+  * Rollback for kumkang
+
+ -- HamoniKR <pkg@hamonikr.org>  Fri, 23 Aug 2024 19:43:09 +0900
+
 hamonikr-upgrade-info (3.2.1) kumkang; urgency=low
 
   * Update debian frontend setting for automatic
