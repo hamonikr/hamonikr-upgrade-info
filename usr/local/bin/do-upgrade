@@ -1,55 +1,47 @@
 #!/bin/bash
 
-# MIT License
-# 
-# Copyright (c) 2023 Kevin Kim (chaeya@gmail.com)
-# 
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-# 
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-# 
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
+# 프로그램 버전 정보
+VERSION="3.5.0"
 
 # 시스템 로케일 확인
 locale=$(locale | grep LANG= | cut -d= -f2 | cut -d_ -f1)
 
-# Function to display error message
 error_message() {
-    if [ "$locale" = "ko" ]; then
-        echo -e "\e[31m오류: $1 작업이 실패했습니다.\e[0m"
-    else
-        echo -e "\e[31mERROR: Failed to execute $1.\e[0m"
-    fi
+    echo -e "\e[31mFailed to execute $1.\e[0m"
 }
 
-# Function to display info message
 info_message() {
-    if [ "$locale" = "ko" ]; then
-        echo -e "\e[92m정보: $1\e[0m"
-    else
-        echo -e "\e[92mINFO: $1\e[0m"
-    fi
+    echo -e "\e[92m$1\e[0m"
 }
+
+warn_message() {
+    echo -e "\e[93m$1\e[0m"
+}
+
+display_version() {
+    echo "version: $VERSION"
+}
+
+# 현재 사용자가 root 권한인지 확인
+if [ "$EUID" -ne 0 ]; then
+    # root 권한이 아닐 때, 안내 메시지 출력 후 sudo로 재실행
+    if [ "$locale" = "ko" ]; then
+        echo -e "\e[31m이 스크립트는 root 권한으로 실행되어야 합니다. 스크립트를 다시 sudo로 실행합니다.\e[0m"
+    else
+        echo -e "\e[31mThis script must be run as root. Re-running the script with sudo.\e[0m"
+    fi
+    exec sudo bash "$0" "$@"
+    exit
+fi
 
 # Function for apt-get operations
 apt_get_operation() {
-    DEBIAN_FRONTEND=noninteractive sudo apt-get -y --assume-yes --option Dpkg::Options::=--force-confnew --allow-remove-essential --allow-change-held-packages "$@" || error_message "$@ Execute"
+    DEBIAN_FRONTEND=noninteractive sudo apt-get -y --assume-yes --option Dpkg::Options::=--force-confnew --allow-downgrades --allow-remove-essential --allow-change-held-packages "$@" || error_message "$@ Execute"
 }
 
 # 현재 APT 저장소 설정 백업
 do_backup() {
+    display_version
     info_message 'Prepare backup file for rollback...'
     for file in /etc/apt/sources.list.d/*.list; do
         if [ -f "$file" ]; then
@@ -61,20 +53,35 @@ do_backup() {
 
 # 스크립트 중단 시 롤백
 do_rollback() {
-    info_message 'The program has been interrupted. Roll back files...'
+    display_version
+    info_message 'The program has been interrupted. Rolling back files...'
     for file in /etc/apt/sources.list.d/*.bak; do
         if [ -f "$file" ]; then
             original_file="${file%.bak}"
-            sudo cp -fv "$file" "$original_file"
-            sudo rm -f "$file"
+            sudo mv -fv "$file" "$original_file"
         fi
     done
-    apt-get update
+    sudo apt-get update
 }
 
-trap do_rollback SIGINT SIGTERM EXIT INT TERM
+# trap 설정 및 백그라운드 프로세스 종료 처리
+cleanup() {
+    info_message "Cleaning up..."
+    # 백그라운드 sudo 세션 루프 종료
+    if [ -n "$KEEP_ALIVE_PID" ]; then
+        kill "$KEEP_ALIVE_PID" 2>/dev/null
+    fi
+    do_rollback
+    exit 1
+}
 
 ### MAIN
+
+# --version 또는 -v 옵션 확인
+if [[ "$1" == "--version" || "$1" == "-v" ]]; then
+    display_version
+    exit 0
+fi
 
 # 시작 시간 기록
 start_time=$(date +%s)
@@ -98,41 +105,55 @@ while true; do
     sleep 60
 done &
 
+# 백그라운드 루프 PID 저장
+KEEP_ALIVE_PID=$!
+
 # 시작 메시지
-if [ "$locale" = "ko" ]; then
-    info_message "업그레이드 과정은 네트워크 환경에 따라 오래 걸릴 수 있습니다."
+if [ "$locale" = "ko" ];then
     echo ""
-    info_message "[주의] 진행 과정에서 YES/NO를 묻는 화면이 나오면 YES를 누르세요."
+    info_message "업그레이드 과정은 시스템 성능과 네트워크 환경에 따라 오래 걸릴 수 있습니다.\n(약 1시간 소요)"
     echo ""
-    info_message "업그레이드 실패 시 다시 실행하시거나, ISO 파일로 설치를 시도하세요."
+    warn_message ">>> 업그레이드 전, 반드시 먼저 중요한 데이터를 백업하세요. <<<"
+    echo ""
+    info_message "업그레이드 작업이 실패하는 경우, ISO 파일로 업그레이드 설치하시기 바랍니다."
+    echo ""    
 else
+    echo ""
     info_message "The upgrade process may take a long time depending on your network environment."
     echo ""
-    info_message "[INFO] Press YES when asked YES/NO during the upgrade process."
+    warn_message ">>> Before the upgrade, be sure to back up important data. <<<"
     echo ""
     info_message "If the upgrade fails, try running it again or consider installing via an ISO file."
+    echo ""    
 fi
 
 # 사용자에게 계속 진행할지 여부를 묻기
-if [ "$locale" = "ko" ]; then
-    read -p "계속하려면 Y를 누르세요 (Y/n): " user_choice
+if [ "$locale" = "ko" ];then
+    read -p "업그레이드를 계속하려면 Y를 누르세요 (Y/n): " user_choice
 else
-    read -p "Press Y to continue (Y/n): " user_choice
+    read -p "Press Y, if you want to continue upgrade (Y/n): " user_choice
 fi
 
 # 사용자의 입력 확인
 case $user_choice in
-    [Yy]|"")
+    [Yy])
         echo "Continuing..."
         ;;
     *)
         echo "Exiting..."
-        exit 1
+        # 여기서 trap 없이 그냥 종료합니다.
+        kill "$KEEP_ALIVE_PID" 2>/dev/null
+        exit 0
         ;;
 esac
 
+# trap 설정: 중요한 작업 전 후에만 설정합니다.
+trap cleanup SIGINT SIGTERM EXIT
+
 # 현재 APT 환경 백업
 do_backup
+
+# END Pre Step
 
 # 업그레이드 전 화면보호기 중지
 RUID=$(who | awk 'FNR == 1 {print $1}')
@@ -145,23 +166,212 @@ fi
 sudo apt update || error_message "apt update"
 apt_get_operation upgrade
 
-# 삭제할 패키지 명을 배열로 저장
-packages=("hamonikrreport" "hamonikrwelcome" "warpinator" "rabbitvcs-core" "hamonikr-nemo-rabbitvcs" "lupin-casper" "gnome-clocks" "gconf2-common" "gconf-service" "gconf-service-backend")
+# 문제 있는 패키지 목록, 여러 줄에 정렬
+problem_packages=(
+    "hamonikrreport" 
+    "hamonikrwelcome" 
+    "warpinator" 
+    "rabbitvcs-core" 
+    "hamonikr-nemo-rabbitvcs" 
+    "lupin-casper" 
+    "gnome-clocks" 
+    "gconf2-common" 
+    "gconf-service" 
+    "gconf-service-backend"
+    "gvfs-backends"
+    "libldb2"
+    "libreoffice-base"
+    "libreoffice-base-core"
+    "libreoffice-base-drivers"
+    "libreoffice-calc"
+    "libreoffice-core"
+    "libreoffice-draw"
+    "libreoffice-gnome"
+    "libreoffice-gtk3"
+    "libreoffice-impress"
+    "libreoffice-math"
+    "libreoffice-sdbc-hsqldb"
+    "libreoffice-writer"
+    "libwbclient0"
+    "python3-dev"
+    "python3-samba"
+    "python3-uno"
+    "samba"
+    "samba-common-bin"
+    "samba-dsdb-modules"
+    "samba-libs"
+    "samba-vfs-modules"
+    "smbclient"
+    "ure"
+    "ure-java"
+    "grub2-theme-kumkang-dark"
+    "hamonikr-icons"
+    "plymouth-theme-kumkang"
+)
 
-# 각 패키지에 대해 확인 후 purge 실행
-for pkg in "${packages[@]}"; do
-if dpkg -l | grep -q "$pkg"; then
-    sudo apt-get purge -y "$pkg" || error_message "apt purge $pkg"
-fi
+info_message "[INFO] Start Purge process."
+
+# 각 문제 패키지에 대해 확인 후 purge 실행
+for pkg in "${problem_packages[@]}"; do
+    if dpkg -l | grep -q "$pkg"; then
+        info_message "$pkg 패키지를 제거 중..."
+        sudo apt-get purge -y "$pkg" || error_message "apt purge $pkg"
+    fi
 done
+
+info_message "[INFO] Add New APT Repo."
 
 # 새 버전 APT 저장소 추가
 wget -qO- https://repo.hamonikr.org/add-hamonikr-paektu.apt | sudo -E bash - || error_message "ADD APT Repository"
 sudo apt update || error_message "apt update"
 apt_get_operation install -f
 
+# https://serverfault.com/questions/48724/100-non-interactive-debian-dist-upgrade
+#lib6c was an issue for me as it ignored the DEBIAN_FRONTEND environment variable and fired a prompt anyway. This should fix it
+echo "libc6 libraries/restart-without-asking boolean true" | debconf-set-selections 
+
+# https://gist.github.com/gene1wood/e4dd448513cb425b5ec398f95cda2462
+echo "postfix postfix/main_mailer_type select No configuration" | debconf-set-selections
+
+dpkg --configure -a
+
+info_message "[INFO] Start upgrade."
+
+# upgrade
+apt_get_operation upgrade
+
+info_message "[INFO] Start dist-upgrade."
+
 # dist-upgrade
 apt_get_operation dist-upgrade
+
+# 중요 패키지
+mint_packages=(
+    "mint-meta-cinnamon"
+    "mint-meta-mate"
+    "mint-meta-xfce"
+    "xreader"
+    "xed"
+    "xviewer"
+    "pix"
+    "mintsystem"
+    "metacity"
+    "nemo-preview"
+    "mintdrivers"
+    "mintupdate"
+    "mintsources"
+    "mintinstall"
+    "ubuntu-system-adjustments"
+    "debian-system-adjustments"
+    "cinnamon"
+    "cinnamon-control-center"
+    "cinnamon-session"
+    "cinnamon-settings-daemon"
+    "cinnamon-screensaver"
+    "cjs"
+    "nemo"
+    "xfwm4"
+    "mate-panel"
+    "marco"
+    "caja"
+    "mate-settings-daemon"
+    "xfce4-xapp-status-plugin"
+    "gnome-calendar"
+    "onboard"
+    "lightdm"
+    "slick-greeter"
+    "plymouth"
+)
+
+hamonikr_packages=(
+    "cinnamon-desktop-environment"
+    "albert"
+    "plank"
+    "hamonikr-system"
+    "hamonikr-keyring"
+    "hamonikr-zsh"
+    "hamonikr-upgrade-info"
+    "apt-file"
+    "apt-rdepends"
+    "asbru-cm"
+    "balena-etcher"
+    "boot-select"
+    "celluloid"
+    "gimp"
+    "gimp-help-ko"
+    "git"
+    "gprename"
+    "grub2-theme-dark"
+    "hamonikr-backgrounds"
+    "hamonikr-backup"
+    "hamonikr-conky"
+    "hamonikr-drive"
+    "hamonikr-ff"
+    "hamonikr-games"
+    "hamonikr-help"
+    "hamonikr-nemo-rabbitvcs"
+    "hamonikr-onboard-layout-ko"
+    "hamonikr-report"
+    "hamonikr-themes"
+    "hamonikr-welcome"
+    "hardinfo"
+    "htop"
+    "hunspell-ko"
+    "jq"
+    "kazam"
+    "language-pack-gnome-ko"
+    "language-pack-ko"
+    "libreoffice-hwp2odt"
+    "libreoffice-style-colibre"
+    "lollypop"
+    "mainline"
+    "naver-whale-stable"
+    "nemo-compare"
+    "nemo-emblems"
+    "nemo-filename-repairer"
+    "nemo-image-converter"
+    "nemo-share"
+    "neofetch"
+    "plymouth-theme-hamonikr"
+    "samba"
+    "shutter"
+    "hamonikr-stacer"
+    "thunderbird"
+    "thunderbird-locale-ko"
+    "tigervnc-standalone-server"
+    "tigervnc-xorg-extension"
+    "transmission-gtk"
+    "tree"
+    "ubiquity-slideshow-mint"
+    "ukui-greeter"
+    "ventoy"
+    "vim"
+    "remmina"
+    "remmina-plugin-rdp"
+    "remmina-plugin-secret"
+    "remmina-plugin-vnc"
+    "remmina-plugin-spice"
+    "tigervnc-standalone-server"
+    "tigervnc-xorg-extension"
+    "xrdp"
+    "xpad"
+)
+
+info_message "[INFO] Start Install important packges."
+
+# 중요 패키지 설치
+for pkg in "${mint_packages[@]}"; do
+    info_message "$pkg 패키지를 설치 중..."
+    apt_get_operation install "$pkg" --reinstall || error_message "apt install $pkg"
+done
+
+info_message "[INFO] Start Install HamoniKR OS Systems."
+
+# 중요 패키지 설치
+for pkg in "${hamonikr_packages[@]}"; do
+    info_message "$pkg 패키지를 설치 중..."
+    apt_get_operation install "$pkg" --reinstall || error_message "apt install $pkg"
+done
 
 # 새 버전 필수 패키지 설치
 apt_get_operation install hamonikr-desktop-environment
@@ -184,8 +394,19 @@ if grep -q "$prev_oscode" /etc/apt/sources.list.d/hamonikr.list; then
     exit 1
 fi
 
-# trap 해제
-trap - SIGINT SIGTERM EXIT INT TERM
+sudo update-alternatives --set default.plymouth /usr/share/plymouth/themes/hamonikr-black/hamonikr-black.plymouth
+sudo update-initramfs -u
+
+# Fix for virtualbox reboot error
+sudo sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT=""/g' /etc/default/grub
+sudo update-grub
+
+info_message "[INFO] Start Clean up..."
+
+# Start Post Step
+
+# trap 해제 - 정상 종료 후 trap 해제
+trap - SIGINT SIGTERM EXIT
 
 # 종료 시간 기록 및 실행 시간 계산
 end_time=$(date +%s)
@@ -203,13 +424,13 @@ else
     info_message "Total execution time: ${hours} hours ${minutes} minutes ${seconds} seconds"
 fi
 
-# 재시작 안내 및 사용자 입력 대기
+# 시스템 재시작 안내
 if [ "$locale" = "ko" ]; then
     info_message "새 버전 적용을 위해서 시스템 재시작이 필요합니다."
-    info_message "시스템을 재시작하려면 엔터를 누르세요. 재시작하지 않으려면 Ctrl+C를 누르세요."
+    info_message "시스템을 재시작하려면 엔터를 누르세요."
 else
     info_message "System restart is required to apply the new version."
-    info_message "Press Enter to restart the system, or Ctrl+C to cancel."
+    info_message "Press Enter to restart the system."
 fi
 
 # 사용자 입력 대기
@@ -217,4 +438,3 @@ read -p ""
 
 # 시스템 재시작
 sudo reboot
-

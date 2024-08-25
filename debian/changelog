@@ -1,3 +1,9 @@
+hamonikr-upgrade-info (3.5.0) paektu; urgency=low
+
+  * Release for Upgrade paektu from kumkang
+
+ -- HamoniKR <pkg@hamonikr.org>  Sun, 25 Aug 2024 16:46:04 +0900
+
 hamonikr-upgrade-info (3.4.2) paektu; urgency=low
 
   * Remove gconf2-common, gconf-service, gconf-service-backend
