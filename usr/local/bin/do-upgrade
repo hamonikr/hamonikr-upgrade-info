@@ -248,8 +248,6 @@ apt_get_operation dist-upgrade
 # 중요 패키지
 mint_packages=(
     "mint-meta-cinnamon"
-    "mint-meta-mate"
-    "mint-meta-xfce"
     "xreader"
     "xed"
     "xviewer"
@@ -262,7 +260,6 @@ mint_packages=(
     "mintsources"
     "mintinstall"
     "ubuntu-system-adjustments"
-    "debian-system-adjustments"
     "cinnamon"
     "cinnamon-control-center"
     "cinnamon-session"
@@ -270,12 +267,7 @@ mint_packages=(
     "cinnamon-screensaver"
     "cjs"
     "nemo"
-    "xfwm4"
-    "mate-panel"
     "marco"
-    "caja"
-    "mate-settings-daemon"
-    "xfce4-xapp-status-plugin"
     "gnome-calendar"
     "onboard"
     "lightdm"
@@ -340,7 +332,6 @@ hamonikr_packages=(
     "thunderbird-locale-ko"
     "tigervnc-standalone-server"
     "tigervnc-xorg-extension"
-    "transmission-gtk"
     "tree"
     "ubiquity-slideshow-mint"
     "ukui-greeter"
@@ -355,6 +346,16 @@ hamonikr_packages=(
     "tigervnc-xorg-extension"
     "xrdp"
     "xpad"
+    "ncdu"
+    "hw-probe"
+    "appimagelauncher"
+    "code"
+    "obsidian"
+    "kollusagent"
+    "megasync"
+    "motrix"
+    "whois"
+    "media-downloader"
 )
 
 info_message "[INFO] Start Install important packges."
@@ -394,12 +395,12 @@ if grep -q "$prev_oscode" /etc/apt/sources.list.d/hamonikr.list; then
     exit 1
 fi
 
-sudo update-alternatives --set default.plymouth /usr/share/plymouth/themes/hamonikr-black/hamonikr-black.plymouth
-sudo update-initramfs -u
+# sudo update-alternatives --set default.plymouth /usr/share/plymouth/themes/hamonikr-black/hamonikr-black.plymouth
+# sudo update-initramfs -u
 
-# Fix for virtualbox reboot error
-sudo sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT=""/g' /etc/default/grub
-sudo update-grub
+# # Fix for virtualbox reboot error
+# sudo sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT=""/g' /etc/default/grub
+# sudo update-grub
 
 info_message "[INFO] Start Clean up..."
 
